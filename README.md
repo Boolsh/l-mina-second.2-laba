@@ -1,0 +1,1 @@
+# l-mina-second.2-laba
