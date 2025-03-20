@@ -35,6 +35,49 @@ int menu()
 	return res;
 }
 
+std::map<std::string, int> task(Hash_table & table)
+{
+	std::map<std::string, int> arr;
+	if (table.get_size() > 0)
+	{
+
+		Hash_item* current;
+		int count = 0;
+		for (int i{}; i < table.get_MAX(); ++i)
+		{
+			current = table.get_elem(i);
+			if (current && current->get_used() && current->get_count() >= 2)
+			{
+				//current->print();
+				arr[current->get_key()] = current->get_count();
+				//if (i % 3 == 0) std::cout << std::endl;
+			}
+		}
+		std::cout << std::endl;
+	}
+	return arr;
+}
+
+void print_task(std::map<std::string, int>& arr)
+{
+	
+	auto it = arr.begin();
+	while (std::next(it) != arr.end()) {
+		if (it->second == 1) continue;
+
+		auto nextIt = std::next(it); 
+
+		while (nextIt != arr.end())
+		{
+			if (nextIt->second >= 2)
+				std::cout << it->first << " " << nextIt->first << "\n";
+			nextIt++;
+			
+		}
+		++it;
+	}
+}
+
 
 int main()
 {
@@ -76,7 +119,11 @@ int main()
 		}
 		if (choice == 5) table.clear();
 		if (choice == 6) table.print();
-		if (choice == 7) table.task();
+		if (choice == 7)
+		{
+			std::map<std::string, int> arr = task(table);
+			print_task(arr);
+		}
 		choice = menu();
 	}
 	printf("\n\n\n\n\nРабота завершена.\n\n\n\n\n");

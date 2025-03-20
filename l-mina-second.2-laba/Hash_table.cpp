@@ -35,46 +35,26 @@ void Hash_table::fill(std::ifstream& file)
 {
     if (file.is_open())
     {
-        std::string word1, word2;
-        file >> word1;
-        while (file >> word2)
-        {
-            if (!insert(word1 + " " + word2))
+        std::string word;
+        while (file >> word)
+            if (!insert(word))
             {
                 printf("Все слова не влезли\n");
                 break;
             }
-            word1 = word2;
-        }
-        printf("\nЗаполнено\n");
+        printf("\nЗаполнено\n\n");
     }
 }
 
-std::map<std::string, int> Hash_table::task()
-{
-    std::map<std::string, int> arr;
-    if (cur_size)
-    {
-        
-        Hash_item* current;
-        int count = 0;
-        for (int i{}; i < MAX_SIZE; ++i)
-        {
-            current = table[i];
-            if (current && current->get_used() && current->get_count() >= 2)
-            {
-                current->print();
-                arr[current->get_key()] = current->get_count();
-                if (i % 3 == 0) std::cout << std::endl;
-            }
-        }
-        std::cout << std::endl;
-    }
-    return arr;
-}
+
 
 void Hash_table::print()
 {
+    if (is_empty())
+    {
+        printf("\n\nТаблица пуста\n\n");
+        return;
+    }
     printf("\n------------------------------------------\n");
     for (int i{}; i < MAX_SIZE; ++i)
     {
@@ -82,7 +62,7 @@ void Hash_table::print()
         if (current && current->get_used())
         {   
             current->print();
-            if (i % 3 == 0) std::cout << std::endl;
+            if (i % 3 == 0) { std::cout << std::endl; }
         }
     }
     printf("\n------------------------------------------\n");
@@ -147,6 +127,11 @@ bool Hash_table::del(std::string words)
 
 void Hash_table::clear()
 {
+    if (is_empty())
+    {
+        printf("\n\nТаблица пуста\n\n");
+        return;
+    }
     for (int i = 0; i < MAX_SIZE; i++)
     {
         if (table[i])
